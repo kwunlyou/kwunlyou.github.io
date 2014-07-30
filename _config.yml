@@ -1,7 +1,7 @@
 # Site settings
 description: "Kun Liu's personal website"
-url: kwunlyou.com
-baseurl: kwunlyou.com/blog/
+#url: kwunlyou.com
+#baseurl: kwunlyou.com/blog/
 
 # Build settings
 markdown: kramdown
