@@ -1,0 +1,30 @@
+---
+layout: default
+title: blog
+home: passive
+cv: passsive
+blog: active
+contact: passive
+---
+
+<div>
+
+	<ul class="list-unstyled">
+		{% for post in paginator.posts %}
+		<li>
+			<p>
+				<a class="post-link" href="{{ post.url | prepend: site.baseurl }}"><h2>{{ post.title }}</h2></a> 
+				{{ post.date | date: "%b %-d, %Y" }}
+			</p>
+			{{ post.excerpt }}
+			<a href="{{ post.url }}">Read more...</a> <hr>
+		</li>
+	    {% endfor %}
+	</ul>
+
+</div>
+
+{% include pagination.html %}  	
+
+
+
