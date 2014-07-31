@@ -1,7 +1,7 @@
 # a new jekyll personal site
 
 # TODO
-1. home page
+<del>1. home page</del>
 2. font
 3. contact
 4. about
