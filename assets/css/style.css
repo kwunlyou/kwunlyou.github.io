@@ -1,6 +1,19 @@
-/*site title*/
-a.site-title {text-decoration: none; color: #c0c0c0; font-size: 32px;}
-a.site-title:hover {text-decoration: none; color: #c0c0c0; font-size: 32px;}
+.body {padding-top: 20px; padding-bottom: 40px; font-family: Helvetica, arial, freesans;}
+
+.header {padding-bottom: 10px; font-size: 16px; font-weight: bold;}
+a.site-title {text-decoration: none; color: #c0c0c0; font-size: 32px; font-weight: bolder}
+a.site-title:hover {text-decoration: none; color: #c0c0c0; font-size: 32px; font-weight: bolder}
+
+.footer {margin-top: 10px; font-size: 90%}
+
+
+div.profile-pic {margin-top: 0px; margin-bottom: 10px;}
+img.img-center {margin: 0 auto;}
+
 .icon-color {color: #c0c0c0;}
 .color-blue {color: #428bca;}
+
+
+
+
 
