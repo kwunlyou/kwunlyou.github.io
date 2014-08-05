@@ -1,19 +1,4 @@
-/*
-.body {padding-top: 20px; padding-bottom: 40px; font-family: Helvetica, arial, freesans;}
-
-.header {padding-bottom: 10px; font-size: 16px; font-weight: bold;}
-a.site-title {text-decoration: none; color: #c0c0c0; font-size: 32px; font-weight: bolder}
-.footer {margin-top: 10px; font-size: 85%; font-weight: bold}
-
-div.profile-pic {margin-top: 0px; margin-bottom: 10px;}
-img.img-center {margin: 0 auto;}
-p.intro-font-size-large {font-size: 22px;}
-p.intro-font-size-middle {font-size: 16px;}
-
-.icon-color {color: #c0c0c0;}
-.color-blue {color: #428bca;}
-*/
-
+body {font-family: 'Ubuntu', sans-serif;}
 .profile-pic {margin-left: 0px; margin-right: 0px;}
 .linkedin-badge {margin-left: 5px; margin-right: 0px;}
 .self-introduction {margin-left: 0px; margin-right: 0px; font-size: 19px; padding-top: 10px;}
