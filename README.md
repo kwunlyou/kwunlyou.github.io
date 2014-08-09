@@ -1,10 +1,6 @@
 # a new jekyll personal site
 
 # TODO
-<del>1. home page</del>
-2. font
-3. contact
-4. about
-5. cv
-6. blog and etc.
-
+1. post format and post.excerpt
+2. navbar font size
+3. post catergories and tag

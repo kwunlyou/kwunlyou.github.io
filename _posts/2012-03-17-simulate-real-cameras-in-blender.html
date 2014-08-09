@@ -8,25 +8,27 @@ tags:
 - computer vision
 - matlab
 - python
+excerpt: Recently I need to simulate real cameras, e.g. render models in different views and get projection matrices of different views. Projection matrices can not be got directly, first we have to get all the parameters of cameras.
 ---
 <p>Recently I need to simulate real cameras, e.g. render models in different views and get projection matrices of different views. Projection matrices can not be got directly, first we have to get all the parameters of cameras.</p>
 
-<p>I use pinhole camera model here. Because there are many different conventions which make confusion.  All the convention here follows the course <a href="ftp://ftp.esat.kuleuven.ac.be/psi/visics/vergauwe/course.pdf" target="_blank"> 3D acquisition</a> (page 23-26). In addition, I use Blender 2.61 with Python API. If you are fresh in Blender, it is better to spend about 1 hour to learn something about it, here is a very good <a href="http://cgcookie.com/blender/get-started-with-blender/" target="_blank">tutorial</a>.</p>
+<p>I use pinhole camera model here. Because there are many different conventions which make confusion.  All the convention here follows the course <a href="ftp://ftp.esat.kuleuven.ac.be/psi/visics/vergauwe/course.pdf"> 3D acquisition</a> (page 23-26). In addition, I use Blender 2.61 with Python API. If you are fresh in Blender, it is better to spend about 1 hour to learn something about it, here is a very good <a href="http://cgcookie.com/blender/get-started-with-blender/">tutorial</a>.</p>
 
-<p>You can download my example <a href="https://docs.google.com/file/d/0B4WuPv10qopdcldLcl9TLS1SWU8wdTIxOTZBQ2tsQQ/edit">here</a> (<span style="color: #ff0000;">Sorry, this link is dead now. But it doesn't matter. All the source code can be found in the following paragraphs.</span>). It includes all the files I talk about  following.</p>
+<p>You can download my example <a href="https://docs.google.com/file/d/0B4WuPv10qopdcldLcl9TLS1SWU8wdTIxOTZBQ2tsQQ/edit"><del>here</del></a> (<span style="color: #ff0000;">Sorry, this link is dead now. But it doesn't matter. All the source code can be found in the following paragraphs.</span>). It includes all the files I talk about  following.</p>
 <ol>
 <li>New a blender projection.  Add a mesh, I choose the cute monkey  in this example. Then add cameras. Materials, lighting ... Blablabla... Actually these are not crucial for the following work. We just need models and cameras.</li>
 <li>Open the Python console in Blender.</li>
 <li>Render all the views. Copy the following script in console and run. Blender will render all the views and save images in YOURPATH you defined.
-<pre class="brush: python; gutter: true; first-line: 1; html-script: true">[codesyntax lang="python"]</pre>
-<pre>import bpy
+
+{% highlight python %}
+import bpy
 import string
 scn = bpy.data.scenes['Scene']
-scn.render.image_settings.file_format = 'JPEG';
-scn.render.image_settings.color_depth = '24';
-scn.render.image_settings.compression = 100;
+scn.render.image_settings.file_format = 'JPEG'
+scn.render.image_settings.color_depth = '24'
+scn.render.image_settings.compression = 100
 
-path = ‘YOURPATH'
+path = YOURPATH
 counter = 0;
 
 for ob in bpy.data.objects:
@@ -35,21 +37,23 @@ for ob in bpy.data.objects:
         name = '{:08d}'.format(counter)
         scn.render.filepath = path + name
         bpy.ops.render.render(write_still=True)
-        counter = counter + 1</pre>
-<pre class="brush: python; gutter: true; first-line: 1; html-script: true">[/codesyntax]</pre>
+        counter = counter + 1
+{% endhighlight %}
+
 </li>
 <li>Output camera parameters. Open text editor in Blender and copy the following script and paste. In order to avoid TAB and space problem, press Format - Convert Whitespace - To Spaces. ALT+P to run the script. Blender will save all the camera parameters in txt files.<br />
-[codesyntax lang="python"]</p>
-<pre>import bpy
+
+{% highlight python %}
+import bpy
 import string
 scn = bpy.data.scenes['Scene']
 w = scn.render.resolution_x
 h = scn.render.resolution_y
 per = scn.render.resolution_percentage
-w = w*per/100;
-h = h*per/100;
+w = w*per/100
+h = h*per/100
 
-path = 'YOURPATH'
+path = YOURPATH
 counter = 0
 
 for ob in bpy.data.objects:
@@ -80,11 +84,13 @@ for ob in bpy.data.objects:
 
         # close
         file.close
-        counter = counter + 1</pre>
-<p>[/codesyntax]</li>
+        counter = counter + 1
+{% endhighlight %}
+
 <li>Compute projection matrices. I use  MATLAB scripts to compute them. The function is read_and_convert. Up to now, we have already computed the projection matrix, and say we save them in matrix proj_mat.<br />
-[codesyntax lang="matlab"]</p>
-<pre>function proj_mat = read_and_convert(n)
+
+{% highlight matlab %}
+function proj_mat = read_and_convert(n)
 % read camera parameters and convert into 3 by 4 matrix
 % NOTE:
 % n --- number of cameras
@@ -139,10 +145,11 @@ for ii=1:n
     fclose(fid);
 end
 
-end</pre>
-<p>[/codesyntax]</li>
+end
+{% endhighlight %}
+
 <li>Output 3D model. I only test export OBJ format. It works well. However, please note that you have to choose  Z-Up and Y-Forward. Otherwise the coordinate frame is wrong.</li>
-<li>Convert OBJ to OFF file. Because it is easy to write a OFF parser. It is better to use <a href="http://meshlab.sourceforge.net/" target="_blank">MeshLab </a>to convert OBJ to OFF.</li>
+<li>Convert OBJ to OFF file. Because it is easy to write a OFF parser. It is better to use <a href="http://meshlab.sourceforge.net/">MeshLab </a>to convert OBJ to OFF.</li>
 <li>Using script check.m to check the results. NOTE: This script also uses function load_mesh_off.</li>
 </ol>
 <p>If you find something wrong in the post, please let me know, thanks! :)</p>
