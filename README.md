@@ -1,5 +1,3 @@
-# a new jekyll personal site
-
-# TODO
+#TODO
 - navbar font size
 - post catergories and tag
