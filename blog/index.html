@@ -14,9 +14,22 @@ contact: passive
 		<li>
 			<p>
 				<a href="{{ post.url }}"><h2>{{ post.title }}</h2></a>
-				{{ post.date | date: "%b %-d, %Y" }}
+				<small style="color:#777">	
+					<ul class="list-inline">
+						<li><i class="fa fa-calendar"></i></li>
+						<li>{{ post.date | date: "%B %-d, %Y" }}</li>
+						<li></li>
+						<li></li>
+						<li><i class="fa fa-folder"></i></li>
+						{% for cat in  post.categories %}
+							<li>{{ cat }}</li>
+						{% endfor %}				
+					</ul>
+				</small>
 			</p>
+
 			{{ post.excerpt }}
+
 			<a href="{{ post.url }}">Read more...</a> <hr>
 		</li>
 	    {% endfor %}

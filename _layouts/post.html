@@ -8,10 +8,29 @@ layout: default
 
 		<header>
 			<h1>{{ page.title }}</h1>
-			<p>{{ page.date | date: "%b %-d, %Y" }}</p>
+			<small style="color:#777">	
+				<ul class="list-inline">
+					<li><i class="fa fa-calendar"></i></li>
+					<li>{{ page.date | date: "%B %-d, %Y" }}</li>
+					<li></li>
+					<li></li>
+					<li><i class="fa fa-folder"></i></li>
+					{% for cat in  page.categories %}
+						<li>{{ cat }}</li>
+					{% endfor %}				
+					<li></li>
+					<li></li>
+					<li><i class="fa fa-tags"></i></li>
+					{% for tag in  page.tags %}
+						<li>{{ tag }}</li>
+					{% endfor %}
+				</ul>
+			</small>
+
 		</header>
 
-		{{ content }}
+		{{ content }}		
+
 	</article>
 
 </div>
