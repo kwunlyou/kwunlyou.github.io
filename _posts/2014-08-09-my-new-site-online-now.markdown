@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "My new site online now!"
-categories: web jekyll 
+categories: life
+tags: web jekyll 
 ---
 
 After several weeks part-time work, the new site is finally online now! [WordPress] and [godaddy hosting] are given up and the following awesome tools are currently used:
