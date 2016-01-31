@@ -1,10 +1,15 @@
 body {font-family: 'Ubuntu', sans-serif;}
 .profile-pic {margin-left: 0px; margin-right: 0px; margin-bottom: 5px;}
 
+/* home page */
 .linkedin-badge {margin-left: 0px; margin-right: 0px;}
 .self-introduction {margin-left: 0px; margin-right: 0px; font-size: 19px; padding-top: 10px;}
 .instagram-gallery {margin: auto;}
 
-
-
-
+/* research */
+.project {margin-top: 10px; margin-bottom: 10px;}
+.project-thumbnail {margin-left: 0px; margin-right: 0px; max-width: 100%; height: auto; vertical-align: middle}
+.vcenter {display: inline-block; vertical-align: middle; float: none;}
+.project-title {margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; font-size: 20px;}
+.project-introduction {margin-left: 0px; margin-right: 0px; margin-top: 5px; margin-bottom: 0px; font-size: 14px;}
+.project-links {margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; font-size: 18px;}
