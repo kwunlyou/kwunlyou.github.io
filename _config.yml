@@ -13,4 +13,5 @@ gems :
   - jekyll-paginate
 
 # syntax highlight
-highlighter: pygments
+highlighter: rouge
+
