@@ -13,3 +13,8 @@ body {font-family: 'Ubuntu', sans-serif;}
 .project-title {margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; font-size: 20px;}
 .project-introduction {margin-left: 0px; margin-right: 0px; margin-top: 5px; margin-bottom: 0px; font-size: 14px;}
 .project-links {margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; font-size: 18px;}
+
+.paper-title {text-align: center;}
+.paper-authors {text-align: center;}
+.paper-author-affiliations {text-align: center;}
+.paper-publisher {text-align: center;}
