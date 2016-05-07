@@ -8,4 +8,106 @@ research: active
 blog: passive
 contact: passive
 ---
-coming soon ...
+<div>
+    <h2 class="paper-title">A New Framework for Interactive Segmentation of Point Clouds</h2>
+    <h3 class="paper-authors">
+        Kun Liu
+        <a style="padding-left:68px;color: black"
+           href="https://iris.ucl.ac.uk/iris/browse/profile?upi=JOBOE65" target="_blank">Jan Boehm
+        </a>
+    </h3>
+    <h4 class="paper-author-affiliations">University College London, United Kingdom</h4>
+    <h4 class="paper-publisher">Int. Arch. Photogramm. Remote Sens. Spatial Inf. Sci., XL-5, 357-362, 2014</h4>
+    <br>
+    <div>
+        <h4>Abstract:</h4>
+        <p>
+            Point cloud segmentation is a fundamental problem in point processing. Segmenting a point cloud fully
+            automatically is very chal- lenging due to the property of point cloud as well as different requirements of
+            distinct users. In this paper, an interactive segmentation method for point clouds is proposed. Only two
+            strokes need to be drawn intuitively to indicate the target object and the background respectively. The draw
+            strokes are sparse and don’t necessarily cover the whole object. Given the strokes, a weighted graph is
+            built and the segmentation is formulated as a minimization problem. The problem is solved efficiently by
+            using the Max Flow Min Cut algorithm. In the experiments, the mobile mapping data of a city area is
+            utilized. The resulting segmentations demonstrate the efficiency of the method that can be potentially
+            applied for general point clouds.
+        </p>
+    </div>
+    <div>
+        <h4>Paper:</h4>
+        <a class="btn btn-default" href="/assets/paper/interactive_segmentation_of_point_clouds.pdf"
+           role="button" target="_blank">PDF</a>
+    </div>
+    <div>
+        <h4>Images:</h4>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="/assets/img/research/interactive_segmentation_of_point_clouds/van.png"
+                   class="thumbnail">
+                    <img src="/assets/img/research/interactive_segmentation_of_point_clouds/van.png"
+                         alt="van" style="width:700px;height:254px">
+                </a>
+                <p>
+                    <b>Figure 1:</b> The two strokes shown in (a) are drawn by users. The orange one specifies the
+                    target object, i.e., a van in the point cloud, and the gray one specifies the background. The
+                    strokes are sparse and don’t necessarily cover a large part. Using graph cuts, the selection of the
+                    orange stroke can propagate over the whole object and hence the van is segmented out from the point
+                    cloud as displayed in (b).
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="/assets/img/research/interactive_segmentation_of_point_clouds/van_graph.png"
+                   class="thumbnail">
+                    <img src="/assets/img/research/interactive_segmentation_of_point_clouds/van_graph.png"
+                         alt="van_graph" style="width:350px;height:227px">
+                </a>
+                <p>
+                    <b>Figure 2:</b> The orange and gray strokes are drawn by users to specify the van and
+                    the background. Given the two strokes, a graph of the point cloud is built, the dots represent the
+                    nodes in the graph and the dashed lines are the edges. Noticeably, the blue and the orange dots are
+                    two added nodes as source and sink.
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <a href="/assets/img/research/interactive_segmentation_of_point_clouds/visibility.png"
+                   class="thumbnail">
+                    <img src="/assets/img/research/interactive_segmentation_of_point_clouds/visibility.png"
+                         alt="visibility" style="width:299px;height:227px">
+                </a>
+                <p>
+                    <b>Figure 3:</b> A 2D example is given to illustrate the algorithm in [Katz et al., 2007] for
+                    computing visibility of point cloud. The blue heart represents a point cloud and the view point is
+                    in the center of the circle. The blue heart is transformed to the cyan distorted one. A convex hull of the transformed heart and the view point is computed, and the visible part of
+                    the blue heart exactly corresponds the hull boundary.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h4>Tranditional Segmentation Tool:</h4>
+        <div class="row">
+            <div class="col-sm-6">
+                <iframe width="350" height="263" src="https://www.youtube.com/embed/rZkToRRojjg" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <h4>Our Results:</h4>
+        <div class="row">
+            <div class="col-sm-6">
+                <iframe width="350" height="263" src="https://www.youtube.com/embed/NbLq2SefQdA" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-6">
+                <iframe width="350" height="263" src="https://www.youtube.com/embed/UObyhRtxoDk" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-6">
+                <iframe width="350" height="263" src="https://www.youtube.com/embed/BrEjG8bEKHM" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-6">
+                <iframe width="350" height="263" src="https://www.youtube.com/embed/A6xqtIbwDaA" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
