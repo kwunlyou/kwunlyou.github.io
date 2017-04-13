@@ -6,3 +6,5 @@ tags: Numerical Linear Algebra
 excerpt: ""
 ---
 coming soon
+
+$$\sum \sigma$$
