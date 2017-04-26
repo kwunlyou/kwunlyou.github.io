@@ -2,7 +2,7 @@
 layout: post
 title:  "Raspberry Pi Zero Video Monitor"
 categories: DIY
-tags: Raspberry
+tags: [Raspberry Pi]
 excerpt: ""
 ---
 ### Materials:
@@ -30,3 +30,8 @@ excerpt: ""
 ### Raspberry Pi Zero Camera Setup:
 1. **Enable the connection to the Raspberry Pi camera**
 <br> `sudo raspi-conf`, go to `interfacing options`, and enable the camera. Reboot the Raspberry Pi Zero. Install the python package `picamera` and type the command `raspistill -o image.jpg` to make sure everything works well.
+
+2. **Intsall RPi-Cam-Web-Interface**
+<br> Follow the official [document](http://elinux.org/RPi-Cam-Web-Interface){:target=_blank} to install the package which provides a convenient web interface to manage and configure Pi camera. It also supports motion detection.
+
+Done. Enjoy!
