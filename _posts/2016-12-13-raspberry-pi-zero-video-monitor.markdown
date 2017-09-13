@@ -2,7 +2,7 @@
 layout: post
 title:  "Raspberry Pi Zero Video Monitor"
 categories: DIY
-tags: Raspberry
+tags: [Raspberry Pi]
 excerpt: ""
 ---
 ### Materials:
@@ -12,7 +12,9 @@ excerpt: ""
 - [USB to microUSB OTG converter shim](https://thepihut.com/products/usb-to-microusb-otg-converter-shim){:target="_blank"}
 - [USB Wifi adapter for the Raspberry Pi](https://thepihut.com/products/usb-wifi-adapter-for-the-raspberry-pi){:target="_blank"}
 - [SanDisk Ultra 16 GB Memory Card](https://www.amazon.co.uk/gp/product/B010Q57SEE/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1){:target="_blank"}
+- [The official Raspberry Pi Zero case](https://www.raspberrypi.org/products/raspberry-pi-zero-case/){:target="_blank"}
 - USB charger plug with USB to micro USB (originally for LG Nexus 5)
+- Mini camera tripod
 
 ### Raspberry Pi Zero Headless Setup:
 1. **Install the operating system Raspbian:** 
@@ -30,3 +32,11 @@ excerpt: ""
 ### Raspberry Pi Zero Camera Setup:
 1. **Enable the connection to the Raspberry Pi camera**
 <br> `sudo raspi-conf`, go to `interfacing options`, and enable the camera. Reboot the Raspberry Pi Zero. Install the python package `picamera` and type the command `raspistill -o image.jpg` to make sure everything works well.
+
+2. **Intsall RPi-Cam-Web-Interface**
+<br> Follow the official [document](http://elinux.org/RPi-Cam-Web-Interface){:target=_blank} to install the package which provides a convenient web interface to manage and configure Pi camera. It also supports motion detection.
+
+Done. Enjoy!
+
+{: .text-center .}
+![test](/assets/img/raspberry_pi_video_monitor.jpg){:width="50%"}
