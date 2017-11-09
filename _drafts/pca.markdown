@@ -37,7 +37,8 @@ excerpt: ""
     - SVD: compute $$A^tA$$ --> call `jblas.Singular.SparseSVD`
   - Improved by Pu Li
     -[issue](https://issues.apache.org/jira/browse/SPARK-1782)
+  - [PCA and SVD for PySpark](https://issues.apache.org/jira/browse/SPARK-6227)
 
 - A [blog post](http://amedee.me/post/pca-large-matrices/) about PCA on large matrices
 
-
+    

@@ -2,7 +2,7 @@
 layout: post
 title:  "Call Overridden Methods from __init__ in Python"
 categories: [Programming]
-tags: [Python, Design]
+tags: [Python, Pattern Design]
 excerpt: ""
 ---
 
