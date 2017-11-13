@@ -18,3 +18,5 @@ $$\sigma(\beta, x) = \frac{1}{1+e^(-\beta \cdot x )}$$ is the **sigmoid** functi
 $$\log(\frac{P[y=1]}{P[y=0]}) = \beta \cdot x$$
 
 - Generalized Linear Model
+
+- [Implementing Sparse Logistic Regression in Spark](https://databricks.com/session/lessons-learned-implementing-sparse-logistic-regression-algorithm-apache-spark)
