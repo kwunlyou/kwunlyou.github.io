@@ -3,7 +3,7 @@ layout: post
 title:  "Imbalanced Classes in Machine Learning"
 categories: [Machine Learning]
 tags: [Imbalanced Classes]
-excerpt: "This short post aims to very briefly cover related topics on imbalanced classes in machine learning. In machine learning, imbalanced classes is very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge"
+excerpt: "In machine learning, imbalanced classes is very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge. This short post aims to briefly cover related topics on imbalanced classes in machine learning."
 ---
 
 ### 1. Introduction
