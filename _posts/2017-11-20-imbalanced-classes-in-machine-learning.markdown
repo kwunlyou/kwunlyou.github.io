@@ -1,52 +1,51 @@
 ---
 layout: post
-title:  "Imbalanced Datasets in Machine Learning"
+title:  "Imbalanced Classes in Machine Learning"
 categories: [Machine Learning]
-tags: [Imbalanced Datasets]
+tags: [Imbalanced Classes]
 excerpt: ""
 ---
 
-#### Introduction
-In machine learning, imbalanced datasets are very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge. 
+### 1. Introduction
+This short post aims to very briefly cover related topics on imbalanced classes in machine learning. In machine learning, imbalanced classes is very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge. 
 
-#### Methods
+### 2. Methods
 In general, there are following types of methods:
-- do nothing 
-
+- do nothing (if lucky enough)
 - data-level:
   - decrease majority size:
     - using clustering methods such as K-means
-    - Condensed Nearest Neighbours
+    - [Condensed Nearest Neighbours](https://doi.org/10.1109/TSMC.1976.4309452)
+      - [Tomek's links](http://contrib.scikit-learn.org/imbalanced-learn/stable/under_sampling.html#tomek-links)
   - increase minority size:
-    - synthesize new samples: [SMOTE: Synthetic Minority Over-sampling Technique](https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/chawla2002.html)
-    - [ADASYN: Adaptive Synthetic Sampling Approach for Imbalanced Learning](http://sci2s.ugr.es/keel/pdf/algorithm/congreso/2008-He-ieee.pdf)
-  - [Tomek links](http://contrib.scikit-learn.org/imbalanced-learn/stable/auto_examples/under-sampling/plot_illustration_tomek_links.html)
-
+    - synthesize new samples: 
+      - [SMOTE](https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/chawla2002.html) (Synthetic Minority Over-sampling Technique)
+      - [ADASYN](http://sci2s.ugr.es/keel/pdf/algorithm/congreso/2008-He-ieee.pdf) (Adaptive Synthetic Sampling Approach for Imbalanced Learning)
 - algorithm-level:
   - class weights
   - decision thresholds 
   - ensemble techniques 
     - boostrap aggregating (bagging) [[code]](https://github.com/silicon-valley-data-science/learning-from-imbalanced-classes/blob/master/blagging.py)
-      - Good for reducing variance, robust to noise, void overfitting; Can be worse if single estimator is bad (use boosting)
+      - Pros: Good for reducing variance, robust to noise, void overfitting
+      - Cons: Can be worse if single estimator is bad (use boosting)
     - boosting (weak learners to a strong learner)
       - Adaptive Boosting (AdaBoost)
       - Gradient Boosting
   - remove minority examples and switch to an anomaly detection problem
     - [Isolation-Based Anomaly Detection](https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/tkdd11.pdf)
     - [Efficient Anomaly Detection by Isolation Using Nearest Neighbour Ensemble](http://ieeexplore.ieee.org/document/7022664/)
-    
 - others:
   - [All the Data and Still Not Enough](https://www.oreilly.com/learning/all-the-data-and-still-not-enough)
   - [Transfer learning](http://dl.acm.org/citation.cfm?id=2597426){:target="blank"}
   
-#### Evaluation metrics
+### 3. Evaluation metrics
 - Do not use `accuracy`, `precision`, `recall`, `F1 score` (hard cutoff on predicted probabilties); use `ROC` curve, `PR` curve, `AUC`
-- Prefer `PR` curve
+- `PR` curve is prefered than `ROC` curve
   - [2015 - The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0118432)
   - [2006 - The Relationship Between Precision-Recall and ROC Curves](http://pages.cs.wisc.edu/~jdavis/davisgoadrichcamera2.pdf)
   - [2005 - An introduction to ROC analysis](http://people.inf.elte.hu/kiss/11dwhdm/roc.pdf)
 
-#### Resources:
+### 4. Resources:
 - Podcast: 
   - [Data Sciece at Home: How to handle imbalanced datasets](https://datascienceathome.podbean.com/e/imbalanced-datasets/){:target="blank"}
 - Blog: 
@@ -64,10 +63,4 @@ In general, there are following types of methods:
     - [sklearn.calibration.CalibratedClassifierCV](http://scikit-learn.org/stable/modules/generated/sklearn.calibration.CalibratedClassifierCV.html)
   - [imbalanced-learn](https://github.com/scikit-learn-contrib/imbalanced-learn)
   - The R package [unbalanced](https://cran.r-project.org/web/packages/unbalanced/index.html)
-
-#### Question: 
-- How to compute AUC when using for imbalanced classification
-  - Calibration before? For example, for LR model
-
-
 
