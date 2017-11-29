@@ -5,8 +5,6 @@ categories: Statistics
 tags: [Machine Learning, Linear Method]
 excerpt: ""
 ---
-### 0. Origin
-
 ### 1. Introduction
 #### 1.1 Motivation
 [**Logistic regression**](https://en.wikipedia.org/wiki/Logistic_regression) arises from the desire to model the posterier probabilities of the $$K$$ classess by using a linear function in $$x$$, while the probabilities sum to $$1$$ and remain in $$[0, 1]$$, i.e.,
@@ -143,13 +141,30 @@ $$
 $$
 
 ##### 2.1.2 Discussions
+**Unique maximum**
+- the cost function (log-likelihood) is concave function of $$\beta$$
+- the Hessian matrix is negative definite as 
+- therefore, there is a unique maximum
+
 **Convergences:**
 - $$\beta=0$$ is a good starting value but no convergence not guaranteed
 - since the log-likelihood is concave, in general, the algorithm converges but overshooting can happen
 - in the case the log-likelihood decreases, step size havling can guarantee convergence
 
 **Overfitting:**
--
+- severe overfitting when the data can be linearly seperated
+- a solution is to introduce regularization
+
+**Interpretation of the weighting matrix $$\mathbf{W}$$:**
+- the diagnonal matrix $$\mathbf{W}$$ can be viewed as variances because
+
+$$
+\begin{align}
+\mathbb{E}[y|x] & = p(x; \beta) \\
+Var[y|x] & = \mathbb{E}(y^2|x) -  \mathbb{E}[t]^2 = p(x; \beta) -  p(x; \beta)^2 = p(x; \beta)(1 - p(x; \beta)) \\
+\text{where the property}~~ y^2 = y ~~\text{is used}
+\end{align}
+$$
 
 
 #### 2.1.3 Multiclasse case
