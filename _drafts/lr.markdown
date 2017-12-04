@@ -48,7 +48,7 @@ $$
 g_i | x_i, \beta \sim Bernoulli(\sigma(\beta, x_i))
 $$ 
 
-where $$\sigma(\beta, x_i) = \frac{1}{1+\exp(\beta_{1,0}+\beta_{1}^T \cdot x_i)}$$ is the [**logistic function**](https://en.wikipedia.org/wiki/Logistic_function) function. And it is easy to verify
+where $$\sigma(\beta, x_i) = \frac{1}{1+\exp(\beta_{1,0}+\beta_{1}^T \cdot x_i)}$$ is the [**logistic function**](https://en.wikipedia.org/wiki/Logistic_function). And it is easy to verify
 
 $$\log \frac{Pr(G=1|X=x)}{Pr(G=2|X=x)} = \beta_{1,0} + \beta_{1}^T \cdot x$$
 
@@ -166,6 +166,20 @@ Var[y|x] & = \mathbb{E}(y^2|x) -  \mathbb{E}[t]^2 = p(x; \beta) -  p(x; \beta)^2
 \end{align}
 $$
 
+**Intepretaton of $$\mathbf{Z}$$:**
+- Let $$z_i$$ be the $$i$$th value in $$\mathbf{z}$$, then we have
+
+$$
+\begin{align}
+z_i &= \beta_{old}^T x_i + \frac{y_i - p(x_i; \beta_{old}))}{(1-p(x_i; \beta_{old})) p(x_i; \beta_{old})} \\
+    &= \beta_{old}^T x_i + \frac{1}{(1-p(x_i; \beta_{old})) p(x_i; \beta_{old})} (y_i - p(x_i; \beta_{old}))) \\
+    &= \beta_{old}^T x_i + \frac{\partial  \beta^T x_i}{\partial p(x_i; \beta)}|_{\beta = \beta_{old}} (y_i - p(x_i; \beta_{old})) \\
+    &\approx \beta^T x_i \\
+    &\text{where}~~\frac{\partial  \beta^T x_i}{\partial p(x_i; \beta)}|_{\beta = \beta_{old}} =  \frac{1}{(1-p(x_i; \beta_{old})) p(x_i; \beta_{old})} \\
+    &\text{can be obtained from}~~ \beta^T x_i = \log \frac{p(x_i; \beta)}{1-p(x_i; \beta)}
+\end{align}
+$$
+- This indicates the $$i$$th value of the IRLS solution is local linear approximation of the logistic function $$\beta^T x_i$$
 
 #### 2.1.3 Multiclasse case
 In the case of $$K \geq 3$$, the iteration of Newton's method can be also solved by using iterative reweighted least squares, 
