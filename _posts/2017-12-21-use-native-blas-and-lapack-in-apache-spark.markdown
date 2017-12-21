@@ -3,7 +3,7 @@ layout: post
 title:  "Use Native BLAS/LAPACK in Apache Spark"
 categories: [Numerical Computing]
 tags: [Apache Spark, BLAS, LAPACK, Breeze, netlib-java]
-excerpt: ""
+excerpt: "The warning messages are often displayed when you use MLlib in Apache Spark. It means native BLAS implementations are not rightly installed or configured for your Apache Spark. A pure Java implementation is used which could harm the performance."
 ---
 
 ### 1. Problem statement
