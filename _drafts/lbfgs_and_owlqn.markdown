@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LBFGS and OWLQN"
+title:  "From Newton's methdo to LBFGS and OWLQN"
 categories: Mathematics
 tags: [Numberical Optimization]
 excerpt: ""
