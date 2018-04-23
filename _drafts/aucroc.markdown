@@ -14,3 +14,6 @@ excerpt: ""
         - [Interpretation in wiki](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve)
         - Source paper: 2005-An introduction to ROC analysis
         
+- PR
+ - [paper](https://papers.nips.cc/paper/5867-precision-recall-gain-curves-pr-analysis-done-right.pdf)
+        

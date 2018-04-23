@@ -2,10 +2,21 @@
 layout: post
 title:  "Logistic Regression"
 categories: Statistics
-tags: [Machine Learning, Linear Method]
+tags: [Machine Learning]
 excerpt: ""
 ---
 ### 1. Introduction
+#### 1.2 Statistical View
+if $$K=2$$ and denote $$\beta=[\beta_{1,0}, \beta_{1}^T]$$, we can treat the dependent variable $$G$$ ($$G=1$$ or $$G=2$$) as an outcome of [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), i.e.,
+
+$$
+g_i | x_i, \beta \sim Bernoulli(\sigma(\beta, x_i))
+$$ 
+
+where $$\sigma(\beta, x_i) = \frac{1}{1+\exp(\beta_{1,0}+\beta_{1}^T \cdot x_i)}$$ is the [**logistic function**](https://en.wikipedia.org/wiki/Logistic_function). And it is easy to verify
+
+$$\log \frac{Pr(G=1|X=x)}{Pr(G=2|X=x)} = \beta_{1,0} + \beta_{1}^T \cdot x$$
+
 #### 1.1 Motivation
 [**Logistic regression**](https://en.wikipedia.org/wiki/Logistic_regression) arises from the desire to model the posterier probabilities of the $$K$$ classess by using a linear function in $$x$$, while the probabilities sum to $$1$$ and remain in $$[0, 1]$$, i.e.,
 
@@ -18,7 +29,7 @@ $$
 \end{align}
 $$
 
-The model has $K-1$ [**logit**](https://en.wikipedia.org/wiki/Logit) or [**log-odd**](https://en.wikipedia.org/wiki/Logit) transformations. The model can be rewrote as 
+The model has $$K-1$$ [**logit**](https://en.wikipedia.org/wiki/Logit) or [**log-odd**](https://en.wikipedia.org/wiki/Logit) transformations. The model can be rewrote as 
 
 $$
 \begin{align}
@@ -40,17 +51,6 @@ If denote the entire parameter set $$\{\beta_{1,0}, \beta_{1}^T, \dots, \beta_{K
 $$
 Pr(G=k|X=x) = p_k(x;\theta)
 $$
-
-#### 1.2 Statistical View
-if $$K=2$$ and denote $$\beta=[\beta_{1,0}, \beta_{1}^T]$$, we can treat the dependent variable $$G$$ ($$G=1$$ or $$G=2$$) as an outcome of [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial), i.e.,
-
-$$
-g_i | x_i, \beta \sim Bernoulli(\sigma(\beta, x_i))
-$$ 
-
-where $$\sigma(\beta, x_i) = \frac{1}{1+\exp(\beta_{1,0}+\beta_{1}^T \cdot x_i)}$$ is the [**logistic function**](https://en.wikipedia.org/wiki/Logistic_function). And it is easy to verify
-
-$$\log \frac{Pr(G=1|X=x)}{Pr(G=2|X=x)} = \beta_{1,0} + \beta_{1}^T \cdot x$$
 
 ### 2. Model Fitting
 The logistic regression model is fitted by using [**maximum likehood estimation**](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation). $$Pr(G|X)$$ can be considered as a conditional probability for some distribution such as [**multinomial distribution**](https://en.wikipedia.org/wiki/Multinomial_distribution).
