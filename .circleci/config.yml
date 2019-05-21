@@ -3,7 +3,7 @@ version: 2.0
 jobs:
     build:
         docker:
-            - image: felicianotech/docker-hugo:latest
+            - image: felicianotech/docker-hugo:0.55.4
         working_directory: ~/kwunlyou.github.io
         steps:
             - add_ssh_keys:
