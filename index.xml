@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kun Liu</title>
+    <link>https://kun-liu.com/</link>
+    <description>Recent content on Kun Liu</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0100</lastBuildDate>
+    
+	    <atom:link href="https://kun-liu.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Use Native BLAS/LAPACK in Apache Spark</title>
+      <link>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</guid>
+      <description>
+
+&lt;h3 id=&#34;1-problem-statement&#34;&gt;1. Problem statement&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;17/12/21 11:11:56 WARN BLAS: Failed to load implementation from: com.github.fommil.netlib.NativeSystemBLAS
+17/12/21 11:11:56 WARN BLAS: Failed to load implementation from: com.github.fommil.netlib.NativeRefBLAS
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The warning messages are often displayed when you use &lt;a href=&#34;https://spark.apache.org/docs/latest/ml-guide.html&#34; target=&#34;_blank&#34;&gt;MLlib&lt;/a&gt; in &lt;a href=&#34;https://spark.apache.org/&#34; target=&#34;_blank&#34;&gt;Apache Spark&lt;/a&gt;.
+It means native &lt;a href=&#34;http://www.netlib.org/blas/&#34; target=&#34;_blank&#34;&gt;BLAS&lt;/a&gt; implementations are not rightly installed or configured for your Apache Spark. A pure Java implementation is used which could harm the performance. See &lt;a href=&#34;#ref_1&#34;&gt;[1]&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;p&gt;The official Spark document &lt;a href=&#34;#ref_2&#34;&gt;[2]&lt;/a&gt; has an explanation about the warning message&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;MLlib uses the linear algebra package Breeze, which depends on netlib-java for optimised numerical processing. If native libraries are not available at runtime, you will see a warning message and a pure JVM implementation will be used instead.
+{: style=&amp;ldquo;font-size: 100%&amp;ldquo;}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Due to licensing issues with runtime proprietary binaries, we do not include netlib-java’s native proxies by default.
+{: style=&amp;ldquo;font-size: 100%&amp;ldquo;}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;2-solutions&#34;&gt;2. Solutions&lt;/h3&gt;
+
+&lt;p&gt;As stated in the official Spark document &lt;a href=&#34;#ref_2&#34;&gt;[2]&lt;/a&gt;,&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;To configure netlib-java / Breeze to use system optimised binaries, include com.github.fommil.netlib:all:1.1.2 (or build Spark with -Pnetlib-lgpl) as a dependency of your project
+{: style=&amp;ldquo;font-size: 100%&amp;ldquo;}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;there are two kinds of solutions&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;rebuild Apache Spark&lt;/li&gt;
+&lt;li&gt;configure your project&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The first one is almost impossible in some scenario such as Amazon EMR. This post focus on the second solution instead.&lt;/p&gt;
+
+&lt;h4 id=&#34;2-1-aside&#34;&gt;2.1 Aside&lt;/h4&gt;
+
+&lt;p&gt;Most of the linear algebra related functions in Spark MLlib are based on &lt;a href=&#34;https://github.com/scalanlp/breeze&#34; target=&#34;_blank&#34;&gt;Breeze&lt;/a&gt; which is a numerical processing library for Scala, while some of them are directly based on the low level library &lt;a href=&#34;https://github.com/fommil/netlib-java&#34; target=&#34;_blank&#34;&gt;netlib-java&lt;/a&gt; which is also used by &lt;a href=&#34;https://github.com/scalanlp/breeze&#34; target=&#34;_blank&#34;&gt;Breeze&lt;/a&gt;. In addition, Spark MLlib has some non-BLAS in-house implementations as well.&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&#34;https://github.com/fommil/netlib-java&#34; target=&#34;_blank&#34;&gt;netlib-java&lt;/a&gt;, the implementations of BLAS/LAPACK are provided by&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;&lt;a href=&#34;http://icl.cs.utk.edu/f2j/&#34; target=&#34;_blank&#34;&gt;F2J&lt;/a&gt; to ensure full portability on the JVM&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;self-contained native builds using the reference Fortran from &lt;a href=&#34;http://www.netlib.org/&#34; target=&#34;_blank&#34;&gt;netlib.org&lt;/a&gt;&amp;ldquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;delegating builds that use machine optimised system libraries&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The relation is illustrated as the figure. In this post, we are trying to configure and use system-provided BLAS (in green).&lt;/p&gt;
+
+&lt;p style=&#34;text-align:center;&#34;&gt;&lt;img src=&#34;https://kun-liu.com/img/spark_blas.png&#34; alt=&#34;Spark BLAS&#34; style=&#34;width: 60%;&#34;/&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;2-2-steps&#34;&gt;2.2 Steps&lt;/h4&gt;
+
+&lt;h5 id=&#34;step-1&#34;&gt;Step 1:&lt;/h5&gt;
+
+&lt;p&gt;Make sure a native BLAS/LAPACK implementation is installed such as &lt;a href=&#34;http://math-atlas.sourceforge.net/&#34; target=&#34;_blank&#34;&gt;ATLAS&lt;/a&gt;, &lt;a href=&#34;https://software.intel.com/mkl&#34; target=&#34;_blank&#34;&gt;Intel MKL&lt;/a&gt;, and &lt;a href=&#34;https://github.com/xianyi/OpenBLAS&#34; target=&#34;_blank&#34;&gt;OpenBLAS&lt;/a&gt;. &lt;a href=&#34;https://github.com/xianyi/OpenBLAS&#34; target=&#34;_blank&#34;&gt;OpenBLAS&lt;/a&gt; generally has an excellent performance among free implementations. If you work on macOS, its &lt;a href=&#34;https://developer.apple.com/documentation/accelerate/veclib&#34; target=&#34;_blank&#34;&gt;vecLib&lt;/a&gt; contains Apple&amp;rsquo;s highly tuned implementation of BLAS/LAPACK.&lt;/p&gt;
+
+&lt;h5 id=&#34;step-2&#34;&gt;Step 2:&lt;/h5&gt;
+
+&lt;p&gt;As sugguested in the official Spark documeny &lt;a href=&#34;#ref_2&#34;&gt;[2]&lt;/a&gt;, include &lt;code&gt;com.github.fommil.netlib:all:1.1.2&lt;/code&gt; in your project to use system optimized binaries.&lt;/p&gt;
+
+&lt;p&gt;However, this is not enough. If you use &lt;a href=&#34;https://www.scala-sbt.org/&#34; target=&#34;_blank&#34;&gt;sbt&lt;/a&gt;, you have to use &lt;a href=&#34;https://github.com/sbt/sbt-assembly#using-published-plugin&#34; target=&#34;_blank&#34;&gt;sbt-assembly&lt;/a&gt; to generate a fat &lt;code&gt;JAR&lt;/code&gt; for your project in order to include netlib-java.&lt;/p&gt;
+
+&lt;h5 id=&#34;step-3&#34;&gt;Step 3:&lt;/h5&gt;
+
+&lt;p&gt;Add your generated fat &lt;code&gt;JAR&lt;/code&gt; to &lt;code&gt;spark.driver.extraClassPath&lt;/code&gt; and &lt;code&gt;spark.executor.extraClassPath&lt;/code&gt; in &lt;code&gt;spark-default.conf&lt;/code&gt;. Do not use &lt;code&gt;--driver-class-path&lt;/code&gt; or &lt;code&gt;--jars&lt;/code&gt; when you &lt;code&gt;spark-submit&lt;/code&gt; your jobs, it does not work (I also want to know why).&lt;/p&gt;
+
+&lt;p&gt;For &lt;code&gt;pyspark&lt;/code&gt; jobs, you only need to do the same configuration in order to use native BLAS.&lt;/p&gt;
+
+&lt;p&gt;NOTE: frequently changing &lt;code&gt;spark-default.conf&lt;/code&gt; is not convenient. Instead, you can prepare two &lt;code&gt;JAR&lt;/code&gt;s, one is for your project and one is for netlib-java.&lt;/p&gt;
+
+&lt;h3 id=&#34;3-others&#34;&gt;3. Others&lt;/h3&gt;
+
+&lt;h4 id=&#34;3-1-amazon-linux&#34;&gt;3.1 Amazon Linux&lt;/h4&gt;
+
+&lt;p&gt;As some people said &lt;a href=&#34;#ref_3&#34;&gt;[3]&lt;/a&gt;, the BLAS/LAPACK installed in Amazon Linux does not perform well. We can install OpenBLAS instead.
+Here is a bash script to install OpenBLAS in Amazon Linux:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
+
+set -e
+
+sudo yum install -y git
+git clone https://github.com/xianyi/OpenBlas.git
+cd OpenBlas/
+make clean
+make -j
+sudo mkdir /usr/lib64/OpenBLAS
+sudo chmod o+w,g+w /usr/lib64/OpenBLAS/
+make PREFIX=/usr/lib64/OpenBLAS install
+sudo rm /etc/ld.so.conf.d/atlas-x86_64.conf
+sudo ldconfig
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/libblas.so
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/libblas.so.3
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/libblas.so.3.5
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/libblas.so.3.5.0
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/liblapack.so
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/liblapack.so.3
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/liblapack.so.3.5
+sudo ln -sf /usr/lib64/OpenBLAS/lib/libopenblas.so /usr/lib64/liblapack.so.3.5.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;3-2-the-multi-thread-issue&#34;&gt;3.2 The multi-thread issue&lt;/h4&gt;
+
+&lt;p&gt;As presented in the issue &lt;a href=&#34;https://issues.apache.org/jira/browse/SPARK-21305&#34; target=&#34;_blank&#34;&gt;Spark-21305&lt;/a&gt;, BLAS with multi-thread support can cause worse performance because it conflicts with Spark executors. Therefore, it is better to disable multi-thread.&lt;/p&gt;
+
+&lt;h4 id=&#34;3-3-paper&#34;&gt;3.3 Paper&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;#ref_4&#34;&gt;[4]&lt;/a&gt; is a bit out of date but is still very worth to read. It gives lots of details about implementations in Spark and experimental results using different BLAS implementations.&lt;/p&gt;
+
+&lt;h4 id=&#34;3-4-motivation&#34;&gt;3.4 Motivation&lt;/h4&gt;
+
+&lt;p&gt;This post is originated from reading &lt;a href=&#34;#ref_3&#34;&gt;[3]&lt;/a&gt;. I found lots of related posts but they are either not complete or out of date. Thus, I decide to record all what I read during solving the problem. All comments are welcome.&lt;/p&gt;
+
+&lt;h3 id=&#34;references&#34;&gt;References:&lt;/h3&gt;
+
+&lt;p&gt;&lt;a name=&#34;ref_1&#34; style=&#34;color:black&#34;&gt;1.&lt;/a&gt; &lt;a href=&#34;http://www.spark.tc/blas-libraries-in-mllib/&#34; target=&#34;_blank&#34;&gt;Improving BLAS library performance for MLlib&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&#34;ref_2&#34; style=&#34;color:black&#34;&gt;2.&lt;/a&gt; &lt;a href=&#34;https://spark.apache.org/docs/latest/ml-guide.html#dependencies&#34; target=&#34;_blank&#34;&gt;MLlib Guide&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&#34;ref_3&#34; style=&#34;color:black&#34;&gt;3.&lt;/a&gt; &lt;a href=&#34;https://stackoverflow.com/questions/37848216/how-to-configure-high-performance-blas-lapack-for-breeze-on-amazon-emr-ec2&#34; target=&#34;_blank&#34;&gt;A question in Stackoverflow&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&#34;ref_4&#34; style=&#34;color:black&#34;&gt;4.&lt;/a&gt; &lt;a href=&#34;https://arxiv.org/abs/1509.02256&#34; target=&#34;_blank&#34;&gt;Matrix Computations and Optimization in Apache Spark&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Imbalanced Classes in Machine Learning</title>
+      <link>https://kun-liu.com/2017/11/20/imbalanced-classes-in-machine-learning/</link>
+      <pubDate>Mon, 20 Nov 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/11/20/imbalanced-classes-in-machine-learning/</guid>
+      <description>
+
+&lt;h3 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h3&gt;
+
+&lt;p&gt;In machine learning, imbalanced classes is very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge. This short post aims to briefly cover related topics on imbalanced classes in machine learning.&lt;/p&gt;
+
+&lt;h3 id=&#34;2-methods&#34;&gt;2. Methods&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;do nothing (if lucky enough)&lt;/li&gt;
+&lt;li&gt;data-level:
+
+&lt;ul&gt;
+&lt;li&gt;decrease majority size:&lt;/li&gt;
+&lt;li&gt;using clustering methods such as K-means&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://doi.org/10.1109/TSMC.1976.4309452&#34; target=&#34;_blank&#34;&gt;Condensed Nearest Neighbours&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://contrib.scikit-learn.org/imbalanced-learn/stable/under_sampling.html#tomek-links&#34; target=&#34;_blank&#34;&gt;Tomek&amp;rsquo;s links&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;increase minority size:&lt;/li&gt;
+&lt;li&gt;synthesize new samples:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/chawla2002.html&#34; target=&#34;_blank&#34;&gt;SMOTE&lt;/a&gt; (Synthetic Minority Over-sampling Technique)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://sci2s.ugr.es/keel/pdf/algorithm/congreso/2008-He-ieee.pdf&#34; target=&#34;_blank&#34;&gt;ADASYN&lt;/a&gt; (Adaptive Synthetic Sampling Approach for Imbalanced Learning)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;algorithm-level:
+
+&lt;ul&gt;
+&lt;li&gt;class weights&lt;/li&gt;
+&lt;li&gt;decision thresholds&lt;/li&gt;
+&lt;li&gt;ensemble techniques&lt;/li&gt;
+&lt;li&gt;boostrap aggregating (bagging) &lt;a href=&#34;https://github.com/silicon-valley-data-science/learning-from-imbalanced-classes/blob/master/blagging.py&#34; target=&#34;_blank&#34;&gt;[code]&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pros: Good for reducing variance, robust to noise, void overfitting&lt;/li&gt;
+&lt;li&gt;Cons: Can be worse if single estimator is bad (use boosting)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;boosting (weak learners to a strong learner)
+
+&lt;ul&gt;
+&lt;li&gt;Adaptive Boosting (AdaBoost)&lt;/li&gt;
+&lt;li&gt;Gradient Boosting&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;remove minority examples and switch to an anomaly detection problem&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/tkdd11.pdf&#34; target=&#34;_blank&#34;&gt;Isolation-Based Anomaly Detection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ieeexplore.ieee.org/document/7022664/&#34; target=&#34;_blank&#34;&gt;Efficient Anomaly Detection by Isolation Using Nearest Neighbour Ensemble&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;others:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.oreilly.com/learning/all-the-data-and-still-not-enough&#34; target=&#34;_blank&#34;&gt;All the Data and Still Not Enough&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dl.acm.org/citation.cfm?id=2597426&#34; target=&#34;_blank&#34;&gt;Transfer learning&lt;/a&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;3-evaluation-metrics&#34;&gt;3. Evaluation metrics&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Do not use &lt;code&gt;accuracy&lt;/code&gt;, &lt;code&gt;precision&lt;/code&gt;, &lt;code&gt;recall&lt;/code&gt;, &lt;code&gt;F1 score&lt;/code&gt; (hard cutoff on predicted probabilties); use &lt;code&gt;ROC&lt;/code&gt; curve, &lt;code&gt;PR&lt;/code&gt; curve, &lt;code&gt;AUC&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PR&lt;/code&gt; curve is prefered than &lt;code&gt;ROC&lt;/code&gt; curve
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0118432&#34; target=&#34;_blank&#34;&gt;2015 - The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://pages.cs.wisc.edu/~jdavis/davisgoadrichcamera2.pdf&#34; target=&#34;_blank&#34;&gt;2006 - The Relationship Between Precision-Recall and ROC Curves&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://people.inf.elte.hu/kiss/11dwhdm/roc.pdf&#34; target=&#34;_blank&#34;&gt;2005 - An introduction to ROC analysis&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;4-resources&#34;&gt;4. Resources:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Podcast:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://datascienceathome.podbean.com/e/imbalanced-datasets/&#34; target=&#34;_blank&#34;&gt;Data Sciece at Home: How to handle imbalanced datasets&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Blog:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.svds.com/learning-imbalanced-classes/&#34; target=&#34;_blank&#34;&gt;Learning from Imbalanced Classes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.svds.com/imbalanced-classes-faq/&#34; target=&#34;_blank&#34;&gt;Imbalanced Classes FAQ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Handling Class Imbalance with R and Caret - Caveats when using the AUC &lt;a href=&#34;http://dpmartin42.github.io/blogposts/r/imbalanced-classes-part-1&#34; target=&#34;_blank&#34;&gt;[Part 1]&lt;/a&gt; &lt;a href=&#34;http://dpmartin42.github.io/blogposts/r/imbalanced-classes-part-2&#34; target=&#34;_blank&#34;&gt;[Part2]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Paper:
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1505.01658&#34; target=&#34;_blank&#34;&gt;A Survey of Predictive Modelling under Imbalanced Distributions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://pdfs.semanticscholar.org/a8ef/5a810099178b70d1490a4e6fc4426b642cde.pdf&#34; target=&#34;_blank&#34;&gt;Class Imbalance, Redux&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://statistics.berkeley.edu/sites/default/files/tech-reports/666.pdf&#34; target=&#34;_blank&#34;&gt;Using Random Forest to Learn Imbalanced Data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Code:
+
+&lt;ul&gt;
+&lt;li&gt;sklearn&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html&#34; target=&#34;_blank&#34;&gt;class_weight&lt;/a&gt; in logistic regression&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html&#34; target=&#34;_blank&#34;&gt;sklearn.model_selection.StratifiedKFold&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://scikit-learn.org/stable/modules/generated/sklearn.calibration.CalibratedClassifierCV.html&#34; target=&#34;_blank&#34;&gt;sklearn.calibration.CalibratedClassifierCV&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/scikit-learn-contrib/imbalanced-learn&#34; target=&#34;_blank&#34;&gt;imbalanced-learn&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The R package &lt;a href=&#34;https://cran.r-project.org/web/packages/unbalanced/index.html&#34; target=&#34;_blank&#34;&gt;unbalanced&lt;/a&gt;
+
+
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Package Name Normalization for Pip Installing</title>
+      <link>https://kun-liu.com/2017/10/12/package-name-normalization-for-pip-installing/</link>
+      <pubDate>Thu, 12 Oct 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/10/12/package-name-normalization-for-pip-installing/</guid>
+      <description>
+
+&lt;h4 id=&#34;name-normalization&#34;&gt;Name normalization&lt;/h4&gt;
+
+&lt;p&gt;Name normalization happens when using pip to install python package. Dash &lt;code&gt;&#39;-&#39;&lt;/code&gt;, underscore &lt;code&gt;&#39;_&#39;&lt;/code&gt; and period &lt;code&gt;&#39;.&#39;&lt;/code&gt;are conflated based on certain rules when pip searchs for packages.&lt;/p&gt;
+
+&lt;h4 id=&#34;find-packages&#34;&gt;Find packages&lt;/h4&gt;
+
+&lt;p&gt;For example, we use the following command to install a package &lt;code&gt;aaa.bbb_ccc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;pip install aaa.bbb_ccc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;pip&lt;/code&gt; will search for the package &lt;code&gt;aaa.bbb_ccc&lt;/code&gt; on &lt;a href=&#34;https://pypi.python.org/pypi&#34; target=&#34;_blank&#34;&gt;PyPI&lt;/a&gt;. The &amp;ldquo;best&amp;rdquo; match for the requirements is selected (see &lt;a href=&#34;https://pip.pypa.io/en/stable/reference/pip_install/#finding-packages&#34; target=&#34;_blank&#34;&gt;pip guide&lt;/a&gt; and &lt;a href=&#34;https://github.com/pypa/pip/blob/9.0.1/pip/index.py#L490&#34; target=&#34;_blank&#34;&gt;source code&lt;/a&gt; for details). Loosely speaking, the &amp;ldquo;best&amp;rdquo; match is the newest version of the package.&lt;/p&gt;
+
+&lt;h4 id=&#34;matching-wheel-names&#34;&gt;Matching &lt;code&gt;wheel&lt;/code&gt; names&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The package name &lt;code&gt;aaa.bbb_ccc&lt;/code&gt; is transformed to &lt;code&gt;aaa-bbb-ccc&lt;/code&gt; by calling &lt;code&gt;canonicalize_name&lt;/code&gt;(&lt;a href=&#34;https://github.com/pypa/pip/blob/9.0.1/pip/index.py#L413&#34; target=&#34;_blank&#34;&gt;source code&lt;/a&gt;)
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# extracted from pip source code
+_canonicalize_regex = re.compile(r&amp;quot;[-_.]+&amp;quot;)
+ 
+def canonicalize_name(name):
+    return _canonicalize_regex.sub(&amp;quot;-&amp;quot;, name).lower()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;wheel&lt;/code&gt; name is transformed in the same way (&lt;a href=&#34;https://github.com/pypa/pip/blob/9.0.1/pip/index.py#L633&#34; target=&#34;_blank&#34;&gt;source code&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;matching-tarball-names&#34;&gt;Matching &lt;code&gt;tarball&lt;/code&gt; names&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;aaa.bbb_ccc&lt;/code&gt; is converted to &lt;code&gt;aaa.bbb-ccc&lt;/code&gt; by calling &lt;code&gt;safe_name&lt;/code&gt; (&lt;a href=&#34;https://github.com/pypa/pip/blob/9.0.1/pip/req/req_install.py#L375&#34; target=&#34;_blank&#34;&gt;source code&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# extracted from pip source code
+def safe_name(name):
+    &amp;quot;&amp;quot;&amp;quot;Convert an arbitrary string to a standard distribution name
+    Any runs of non-alphanumeric/. characters are replaced with a single &#39;-&#39;.
+    &amp;quot;&amp;quot;&amp;quot;
+    return re.sub(&#39;[^A-Za-z0-9.]+&#39;, &#39;-&#39;, name)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&#39;_&#39;&lt;/code&gt; in the &lt;code&gt;tarball&lt;/code&gt; name is replaced by &lt;code&gt;&#39;-&#39;&lt;/code&gt; (&lt;a href=&#34;https://github.com/pypa/pip/blob/9.0.1/pip/index.py#L706&#34; target=&#34;_blank&#34;&gt;source code&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;package-name-convention-in-pep-8-https-www-python-org-dev-peps-pep-0008-package-and-module-names&#34;&gt;Package name convention in &lt;a href=&#34;https://www.python.org/dev/peps/pep-0008/#package-and-module-names&#34; target=&#34;_blank&#34;&gt;PEP 8&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.python.org/dev/peps/pep-0008/&#34; target=&#34;_blank&#34;&gt;PEP 8&lt;/a&gt; doesn&amp;rsquo;t encourage a long and complicated package name.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# extracted from PEP 8
+Python packages should also have short, all-lowercase names, although the use of underscores is discouraged.
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Raspberry Pi Zero Video Monitor</title>
+      <link>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</guid>
+      <description>
+
+&lt;h3 id=&#34;materials&#34;&gt;Materials:&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepihut.com/products/raspberry-pi-zero&#34; target=&#34;_blank&#34;&gt;Raspberry Pi Zero&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepihut.com/products/raspberry-pi-zero-camera-adapter&#34; target=&#34;_blank&#34;&gt;Raspberry Pi Zero camera adapter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepihut.com/products/raspberry-pi-noir-camera-module&#34; target=&#34;_blank&#34;&gt;Raspberry Pi NoIR camera module V2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepihut.com/products/usb-to-microusb-otg-converter-shim&#34; target=&#34;_blank&#34;&gt;USB to microUSB OTG converter shim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepihut.com/products/usb-wifi-adapter-for-the-raspberry-pi&#34; target=&#34;_blank&#34;&gt;USB Wifi adapter for the Raspberry Pi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.amazon.co.uk/gp/product/B010Q57SEE/ref=oh_aui_detailpage_o02_s00?ie=UTF8&amp;amp;psc=1&#34; target=&#34;_blank&#34;&gt;SanDisk Ultra 16 GB Memory Card&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.raspberrypi.org/products/raspberry-pi-zero-case/&#34; target=&#34;_blank&#34;&gt;The official Raspberry Pi Zero case&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;USB charger plug with USB to micro USB (originally for LG Nexus 5)&lt;/li&gt;
+&lt;li&gt;Mini camera tripod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;raspberry-pi-zero-headless-setup&#34;&gt;Raspberry Pi Zero Headless Setup:&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Install the operating system Raspbian:&lt;/strong&gt;
+&lt;br&gt; Download the image &lt;a href=&#34;https://www.raspberrypi.org/downloads/raspbian/&#34; target=&#34;_blank&#34;&gt;RASPBIAN JESSIE LITE&lt;/a&gt;, and write the image to the SD card following the online &lt;a href=&#34;https://www.raspberrypi.org/documentation/installation/installing-images/README.md&#34; target=&#34;_blank&#34;&gt;instruction&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Conifgure SSH access via USB:&lt;/strong&gt;
+&lt;br&gt; Modify &lt;code&gt;config.txt&lt;/code&gt; and &lt;code&gt;cmdline.txt&lt;/code&gt; respectively in the &lt;code&gt;/boot/&lt;/code&gt; dicrectory based on this &lt;a href=&#34;https://www.thepolyglotdeveloper.com/2016/06/connect-raspberry-pi-zero-usb-cable-ssh/&#34; target=&#34;_blank&#34;&gt;guide&lt;/a&gt;. &lt;font color=&#34;red&#34;&gt;Note&lt;/font&gt;, SSH is disabled on the lastest Raspbian by default as stated in &lt;a href=&#34;https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/&#34; target=&#34;_blank&#34;&gt;this security update&lt;/a&gt;. To enable SSH,  we have to create a file named as &lt;code&gt;ssh&lt;/code&gt; in the &lt;code&gt;/boot/&lt;/code&gt; directory.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;SSH to Raspberry Pi Zero&lt;/strong&gt;
+&lt;br&gt; Insert the SD card to Raspberry Pi Zero and connect it to your PC or laptop via the the USB cable. &lt;font color=&#34;red&#34;&gt;Note&lt;/font&gt;, the micro USB side must to be connected with the data port (not power port) of Raspberry Pi Zero. Type &lt;code&gt;ssh pi@raspberrypi.local&lt;/code&gt; in your terminal to SSH to Raspberry Pi Zero, the default password is raspberry.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Configure the WIFI&lt;/strong&gt;
+&lt;br&gt; Basically, &lt;code&gt;/etc/network/interfaces&lt;/code&gt; and &lt;code&gt;/etc/wpa_supplicant/wpa_supplicant.conf&lt;/code&gt; have to be modified. You can follow this &lt;a href=&#34;https://davidmaitland.me/2015/12/raspberry-pi-zero-headless-setup/&#34; target=&#34;_blank&#34;&gt;article&lt;/a&gt; to finish the configuration.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;raspberry-pi-zero-camera-setup&#34;&gt;Raspberry Pi Zero Camera Setup:&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Enable the connection to the Raspberry Pi camera&lt;/strong&gt;
+&lt;br&gt; &lt;code&gt;sudo raspi-conf&lt;/code&gt;, go to &lt;code&gt;interfacing options&lt;/code&gt;, and enable the camera. Reboot the Raspberry Pi Zero. Install the python package &lt;code&gt;picamera&lt;/code&gt; and type the command &lt;code&gt;raspistill -o image.jpg&lt;/code&gt; to make sure everything works well.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Intsall RPi-Cam-Web-Interface&lt;/strong&gt;
+&lt;br&gt; Follow the official &lt;a href=&#34;http://elinux.org/RPi-Cam-Web-Interface&#34; target=&#34;_blank&#34;&gt;document&lt;/a&gt; to install the package which provides a convenient web interface to manage and configure Pi camera. It also supports motion detection.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Done. Enjoy!&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&#34;raspberry_pi_video_monitor&#34; style=&#34;width:50%&#34; src=&#34;https://kun-liu.com/img/raspberry_pi_video_monitor.jpg&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Linear Sparse Solvers</title>
+      <link>https://kun-liu.com/2012/07/27/linear-sparse-solvers/</link>
+      <pubDate>Fri, 27 Jul 2012 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2012/07/27/linear-sparse-solvers/</guid>
+      <description>&lt;p&gt;Recently I have to accelerate my last code and most of time are spent on solving linear sparse systems. Since my coefficient matrix is a symmetric positive definite matrix (s.p.d.), I always use &lt;a href=&#34;http://www.cise.ufl.edu/research/sparse/cholmod/&#34;&gt;CHOLMOD &lt;/a&gt;. But its performance cannot reach my requirement, I  tried to search another better solver. Then I tried &lt;a href=&#34;http://www.mathworks.com/help/techdoc/ref/mldivide.html&#34;&gt;backslash&lt;/a&gt;(\) in MATLAB, the build-in &lt;a href=&#34;http://en.wikipedia.org/wiki/Conjugate_gradient_method&#34;&gt;preconditioned conjugate gradient&lt;/a&gt; (PCG) method in &lt;a href=&#34;http://eigen.tuxfamily.org/index.php?title=Main_Page&#34;&gt;Eigen&lt;/a&gt;, PARDISO in &lt;a href=&#34;http://software.intel.com/en-us/articles/intel-mkl/&#34;&gt;intel MKL&lt;/a&gt; and PCG in intel MKL.&lt;/p&gt;
+
+&lt;p&gt;There is a comparison article (from &lt;a href=&#34;http://www.cise.ufl.edu/~davis/&#34; &gt;Tim Davis&lt;/a&gt;) of CHOLMOD with PCG method &lt;a href=&#34;http://www.cise.ufl.edu/research/sparse/pcg_compare/&#34; &gt;[link]&lt;/a&gt;. The main idea is that CHOLMOD performs bettter than PCG in most cases. However, unfortunately from my experiments it seems that PCG is more suitable than direct solvers (CHOLMOD and MKL) in my case. PCG need less time than direct solvers (CHOLMOD and MKL) to get similar results in my problem. Here is a figure roughly showing my results:&lt;/p&gt;
+
+&lt;p class=&#34;text-center&#34;&gt;&lt;img title=&#34;time&#34; src=&#34;https://kun-liu.com/img/time.png&#34; alt=&#34;&#34; width=100% height=100%&gt;&lt;strong&gt;NOTE: x axis represents the size of the coefficient matrix and y axis represents the solving time.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;However, in my problem I have to solve lots of times linear sparse systems. It is not as fast as I want. Probably I have to improve the theory part to nail the problem now? Or is there another other better solvers? Je ne sais pas. :(&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Quick Start With Suitesparse for Linear Sparse Solver</title>
+      <link>https://kun-liu.com/2012/03/15/quick-start-with-suitesparse-for-linear-sparse-solver/</link>
+      <pubDate>Thu, 15 Mar 2012 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2012/03/15/quick-start-with-suitesparse-for-linear-sparse-solver/</guid>
+      <description>&lt;p&gt;Download, compile and install &lt;a href=&#34;http://www.tacc.utexas.edu/tacc-projects/gotoblas2&#34;&gt;gotoBLAS2&lt;/a&gt; (NOTE: With new CPU,  it may have errors when compiling. We can get solutions by searching the errors information online).&lt;/p&gt;
+
+&lt;p&gt;Download, compile and install &lt;a href=&#34;http://www.cise.ufl.edu/research/sparse/SuiteSparse/&#34;&gt;SuiteSparse&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Just follow the manual then  everything should be OK.
+Here is a demo which uses &lt;a href=&#34;http://www.cise.ufl.edu/research/sparse/cholmod/&#34;&gt;CHOLMOD&lt;/a&gt; as linear sparse solver.&lt;/p&gt;
+
+&lt;div&gt;Download: &lt;a href=&#34;https://docs.google.com/file/d/0B4WuPv10qopdSTJ0Vl9CZmRTbmluRUJnQnZnZzFjdw/edit&#34;&gt;&lt;del&gt;CHOLMOD_Demo&lt;/del&gt;&lt;/a&gt; &lt;span style=&#34;color:red&#34;&gt;(Sorry, the link is dead.)&lt;/span&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Kun Liu</title>
+    <link>https://kun-liu.com/categories/</link>
+    <description>Recent content in Categories on Kun Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://kun-liu.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Numerical Computing</title>
+      <link>https://kun-liu.com/categories/numerical-computing/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/categories/numerical-computing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine Learning</title>
+      <link>https://kun-liu.com/categories/machine-learning/</link>
+      <pubDate>Mon, 20 Nov 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/categories/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Programming</title>
+      <link>https://kun-liu.com/categories/programming/</link>
+      <pubDate>Thu, 12 Oct 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/categories/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DIY</title>
+      <link>https://kun-liu.com/categories/diy/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/categories/diy/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

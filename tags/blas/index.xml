@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BLAS on Kun Liu</title>
+    <link>https://kun-liu.com/tags/blas/</link>
+    <description>Recent content in BLAS on Kun Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://kun-liu.com/tags/blas/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Use Native BLAS/LAPACK in Apache Spark</title>
+      <link>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</guid>
+      <description>The warning messages are often displayed when you use MLlib in Apache Spark. It means native BLAS implementations are not rightly installed or configured for your Apache Spark. A pure Java implementation is used which could harm the performance.</description>
+    </item>
+    
+  </channel>
+</rss>

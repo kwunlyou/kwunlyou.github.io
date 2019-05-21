@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raspberry Pi on Kun Liu</title>
+    <link>https://kun-liu.com/tags/raspberry-pi/</link>
+    <description>Recent content in Raspberry Pi on Kun Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    <lastBuildDate>Fri, 23 Dec 2016 00:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://kun-liu.com/tags/raspberry-pi/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Raspberry Pi Zero Video Monitor</title>
+      <link>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</guid>
+      <description>Materials:  Raspberry Pi Zero Raspberry Pi Zero camera adapter Raspberry Pi NoIR camera module V2 USB to microUSB OTG converter shim USB Wifi adapter for the Raspberry Pi SanDisk Ultra 16 GB Memory Card The official Raspberry Pi Zero case USB charger plug with USB to micro USB (originally for LG Nexus 5) Mini camera tripod  Raspberry Pi Zero Headless Setup:  Install the operating system Raspbian: Download the image RASPBIAN JESSIE LITE, and write the image to the SD card following the online instruction.</description>
+    </item>
+    
+  </channel>
+</rss>

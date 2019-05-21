@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>admin on Kun Liu</title>
+    <link>https://kun-liu.com/authors/admin/</link>
+    <description>Recent content in admin on Kun Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    
+	<atom:link href="https://kun-liu.com/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://kun-liu.com/author/admin/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kun-liu.com/author/admin/</guid>
+      <description>I am currently a data scientist at IHS Markit. I analyse data from company databases to drive optimization and improvement of product development and business strategies for a variety of industries including financial services, economics, energy, maritime, etc. From 2013 to 2016, I was a research associate at University College London (UCL). I was building a big data platform which was able to process massive amounts of geospatial data. From 2010 to 2013, I was a PhD researcher at the ALICE team of INRIA (French Institute for Research in Computer Science and Automation).</description>
+    </item>
+    
+  </channel>
+</rss>

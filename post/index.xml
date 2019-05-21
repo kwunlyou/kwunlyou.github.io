@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Kun Liu</title>
+    <link>https://kun-liu.com/post/</link>
+    <description>Recent content in Posts on Kun Liu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; {year} Kun Liu</copyright>
+    <lastBuildDate>Thu, 21 Dec 2017 00:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://kun-liu.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Use Native BLAS/LAPACK in Apache Spark</title>
+      <link>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</link>
+      <pubDate>Thu, 21 Dec 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/12/21/use-native-blas/lapack-in-apache-spark/</guid>
+      <description>The warning messages are often displayed when you use MLlib in Apache Spark. It means native BLAS implementations are not rightly installed or configured for your Apache Spark. A pure Java implementation is used which could harm the performance.</description>
+    </item>
+    
+    <item>
+      <title>Imbalanced Classes in Machine Learning</title>
+      <link>https://kun-liu.com/2017/11/20/imbalanced-classes-in-machine-learning/</link>
+      <pubDate>Mon, 20 Nov 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/11/20/imbalanced-classes-in-machine-learning/</guid>
+      <description>In machine learning, imbalanced classes is very common in practice. However, no algorithm can deal with the issue directly and other auxiliary methods must be introduced explicitly to resolve the challenge. This short post aims to briefly cover related topics on imbalanced classes in machine learning.</description>
+    </item>
+    
+    <item>
+      <title>Package Name Normalization for Pip Installing</title>
+      <link>https://kun-liu.com/2017/10/12/package-name-normalization-for-pip-installing/</link>
+      <pubDate>Thu, 12 Oct 2017 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2017/10/12/package-name-normalization-for-pip-installing/</guid>
+      <description>Name normalization happens when using pip to install python package. Dash, underscore and period are conflated based on certain rules when pip searchs for packages.</description>
+    </item>
+    
+    <item>
+      <title>Raspberry Pi Zero Video Monitor</title>
+      <link>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</link>
+      <pubDate>Fri, 23 Dec 2016 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2016/12/23/raspberry-pi-zero-video-monitor/</guid>
+      <description>Materials:  Raspberry Pi Zero Raspberry Pi Zero camera adapter Raspberry Pi NoIR camera module V2 USB to microUSB OTG converter shim USB Wifi adapter for the Raspberry Pi SanDisk Ultra 16 GB Memory Card The official Raspberry Pi Zero case USB charger plug with USB to micro USB (originally for LG Nexus 5) Mini camera tripod  Raspberry Pi Zero Headless Setup:  Install the operating system Raspbian: Download the image RASPBIAN JESSIE LITE, and write the image to the SD card following the online instruction.</description>
+    </item>
+    
+    <item>
+      <title>Linear Sparse Solvers</title>
+      <link>https://kun-liu.com/2012/07/27/linear-sparse-solvers/</link>
+      <pubDate>Fri, 27 Jul 2012 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2012/07/27/linear-sparse-solvers/</guid>
+      <description>Recently I have to accelerate my last code and most of time are spent on solving linear sparse systems. Since my coefficient matrix is a symmetric positive definite matrix (s.p.d.), I always use CHOLMOD. But its performance cannot reach my requirement, I tried to search another better solver.</description>
+    </item>
+    
+    <item>
+      <title>Quick Start With Suitesparse for Linear Sparse Solver</title>
+      <link>https://kun-liu.com/2012/03/15/quick-start-with-suitesparse-for-linear-sparse-solver/</link>
+      <pubDate>Thu, 15 Mar 2012 00:00:00 +0100</pubDate>
+      
+      <guid>https://kun-liu.com/2012/03/15/quick-start-with-suitesparse-for-linear-sparse-solver/</guid>
+      <description>Download, compile and install gotoBLAS2 (NOTE&amp;#58; With new CPU, it may have errors when compiling. We can get solutions by searching the errors information online).</description>
+    </item>
+    
+  </channel>
+</rss>
