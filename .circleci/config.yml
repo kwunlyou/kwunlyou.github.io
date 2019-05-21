@@ -22,6 +22,7 @@ jobs:
                 name: Deploy to Github Pages
                 working_directory: ~/public
                 command: |
+                    cp -rf ~/kwunlyou.github.io/.circleci .
                     git config credential.helper 'cache --timeout=120'
                     git config user.email "zju.liukun@gmail.com"
                     git config user.name "kwunlyou"
