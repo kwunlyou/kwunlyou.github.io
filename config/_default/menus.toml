@@ -1,0 +1,14 @@
+[[main]]
+  name = "Home"
+  url = "#about"
+  weight = 10
+
+[[main]]
+  name = "Post"
+  url = "/post"
+  weight = 20
+
+[[main]]
+  name = "Resume"
+  url = "files/resume.pdf"
+  weight = 30
