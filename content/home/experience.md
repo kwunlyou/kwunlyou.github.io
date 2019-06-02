@@ -24,7 +24,7 @@ date_format = "Jan 2006"
   location = "London, UK"
   date_start = "2018-06-01"
   date_end = ""
-  description = "As a data scientist, I analyse data from company databases to drive optimization and improvement of product development and business strategies. My daily work is to develop data-driven solutions by means of the cutting edge machine learning technologies."
+  description = "As a data scientist, I analyze data from company databases to drive optimization and improvement of product development and business strategies. My daily work is to develop data-driven solutions by means of the cutting edge machine learning technologies."
 
 [[experience]]
   title = "Data Scientist"
